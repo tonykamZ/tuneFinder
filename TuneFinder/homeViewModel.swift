@@ -12,51 +12,67 @@ class HomeViewModel: ObservableObject {
     func performSearch() {
         let searchTerm = searchText.replacingOccurrences(of: " ", with: "+")
         let entityQuery = getEntityString(selectedEntities)
-        let apiUrl = "https://itunes.apple.com/search?term=\(searchTerm)&entity=\(entityQuery)"
         
-        guard let url = URL(string: apiUrl) else {
-            return
+        isLoading = true
+        
+        var fetchedResults: [iTuneFilterApiResponse] = []
+        
+        func processResults() {
+            DispatchQueue.main.async {
+                self.searchResults = fetchedResults
+                self.isLoading = false
+                self.isSearchedEmpty = self.searchResults.isEmpty
+                self.currentSearchedEntities = getEntityStringForDisplay(self.selectedEntities)
+                self.currentSearchedKeyword = self.searchText
+            }
         }
         
-        isLoading = true // Set isLoading to true when starting the search
-        
-        print(apiUrl)
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            defer {
-                DispatchQueue.main.async {
-                    self.isLoading = false
-                    self.isSearchedEmpty = self.searchResults.isEmpty
-                    self.currentSearchedEntities = getEntityStringForDisplay(self.selectedEntities)
-                    self.currentSearchedKeyword = self.searchText
-                }
+        func fetchResults() {
+            let apiUrl = "https://itunes.apple.com/search?term=\(searchTerm)&entity=\(entityQuery)&limit=9999"
+            
+            print(apiUrl)
+            guard let url = URL(string: apiUrl) else {
+                print("Invalid URL")
+                processResults()
+                return
             }
             
-            do {
-                if let json = try JSONSerialization.jsonObject(with: data!, options: []) as? [String: Any],
-                    let results = json["results"] as? [[String: Any]] {
-                    let searchResults = results.compactMap { resultDict in
-                        if let artistName = resultDict["artistName"] as? String,
-                           let collectionName = resultDict["collectionName"] as? String,
-                           let artworkUrl100 = resultDict["artworkUrl100"] as? String,
-                            let primaryGenreName = resultDict["primaryGenreName"] as? String {
-                            return iTuneFilterApiResponse(collectionName:collectionName, artistName: artistName, primaryGenreName: primaryGenreName, artworkUrl100: artworkUrl100)
-                        }
-                        return nil
-                    }
-                    DispatchQueue.main.async {
-                        self.searchResults = searchResults
-                    }
-                } else {
-                    print("Failed to decode JSON data: Invalid format.")
-                    DispatchQueue.main.async {
-                        self.searchResults = []
-                    }
+            URLSession.shared.dataTask(with: url) { data, response, error in
+                guard let data = data else {
+                    print("No data received")
+                    processResults()
+                    return
                 }
-            } catch let error {
-                print("Error decoding JSON data: \(error)")
-                self.searchResults = []
-            }
-        }.resume()
+                
+                do {
+                    if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                        let results = json["results"] as? [[String: Any]] {
+                                                
+                        let searchResults = results.compactMap { resultDict in
+                            if let artistName = resultDict["artistName"] as? String,
+                               let collectionName = resultDict["collectionName"] as? String,
+                               let artworkUrl100 = resultDict["artworkUrl100"] as? String,
+                               let primaryGenreName = resultDict["primaryGenreName"] as? String {
+                                return iTuneFilterApiResponse(collectionName: collectionName, artistName: artistName, primaryGenreName: primaryGenreName, artworkUrl100: artworkUrl100)
+                            }
+                            return nil
+                        }
+                        
+                        print("successfully get \(searchResults.count) data")
+                        fetchedResults.append(contentsOf: searchResults)
+                        processResults()
+                    } else {
+                        print("Failed to decode JSON data: Invalid format.")
+                        processResults()
+                    }
+                } catch let error {
+                    print("Error decoding JSON data: \(error)")
+                    processResults()
+                }
+            }.resume()
+        }
+        
+        fetchResults()
     }
     
     func loadData() {
