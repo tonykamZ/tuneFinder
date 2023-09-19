@@ -67,6 +67,7 @@ struct DetailView: View {
                 }
             }
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .onAppear {
             fetchSongDetails()
             checkIsBookmarked()
@@ -154,17 +155,22 @@ struct DetailView: View {
     }
     
     private func updateFavorites() {
-        var favoriteCollectionIDs = UserDefaults.standard.array(forKey: "FavoriteCollectionIDs") as? [Int] ?? []
-        
-        if isBookmarked {
-            favoriteCollectionIDs.append(cid)
+        var favoriteCollections = UserDefaults.standard.array(forKey: "FavoriteCollections") as? [[String: Any]] ?? []
+
+        if isBookmarked, let currentItem = fetchedResults.first {
+            let collectionName = currentItem.collectionName
+            let artworkUrl100 = currentItem.artworkUrl100
+            
+            let newCollection = ["collectionId": cid, "collectionName": collectionName, "artworkUrl100": artworkUrl100] as [String : Any]
+            favoriteCollections.append(newCollection)
+            
             showPopup = true
             schedulePopupDismissal()
         } else {
-            favoriteCollectionIDs.removeAll { $0 == cid }
+            favoriteCollections.removeAll { ($0["collectionId"] as? Int) == cid }
         }
         
-        UserDefaults.standard.setValue(favoriteCollectionIDs, forKey: "FavoriteCollectionIDs")
+        UserDefaults.standard.setValue(favoriteCollections, forKey: "FavoriteCollections")
     }
     
     private func schedulePopupDismissal() {
@@ -174,8 +180,8 @@ struct DetailView: View {
     }
     
     private func checkIsBookmarked() {
-        let favoriteCollectionIDs = UserDefaults.standard.array(forKey: "FavoriteCollectionIDs") as? [Int] ?? []
-        isBookmarked = favoriteCollectionIDs.contains(cid)
+        let favoriteCollections = UserDefaults.standard.array(forKey: "FavoriteCollections") as? [[String: Any]] ?? []
+        isBookmarked = favoriteCollections.contains { ($0["collectionId"] as? Int) == cid }
     }
     
 }

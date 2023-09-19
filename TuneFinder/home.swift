@@ -127,6 +127,11 @@ struct HomeView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.top)
                 .navigationBarTitle("Tune Finder")
+                .navigationBarItems(trailing:
+                       NavigationLink(destination: FavoritesView()) {
+                           Text("My fav")
+                       }
+                   )
             }
             .onAppear {
                 viewModel.loadData()
@@ -184,7 +189,7 @@ struct SearchResultView: View {
                 } placeholder: {
                     Color.gray
                 }
-                .frame(width: 100)
+                .frame(width: 100, height: 100)
                 
                 VStack(alignment: .leading, spacing: 8) {
                     Text(result.collectionName)
