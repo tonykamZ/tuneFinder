@@ -1,46 +1,181 @@
 import SwiftUI
-
-struct Song: Identifiable {
-    let id = UUID()
-    let title: String
-    // Additional properties for song details
-}
+import AVFoundation
 
 struct DetailView: View {
-    let song: Song
+    let previewUrl: String
+    let cid: Int
+    @State private var isLoading = false
     @State private var isBookmarked = false
+    @State private var showPopup = false
+    @State private var fetchedResults: [iTuneFilterApiResponse] = []
+    
     
     var body: some View {
         VStack {
-            Text(song.title)
-                .font(.title)
-                .padding()
-            
-            Button(action: {
-                isBookmarked.toggle()
-                updateFavorites()
-            }) {
-                Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")
-                    .font(.title)
+            if isLoading {
+                ProgressView()
                     .padding()
+            } else {
+                VStack {
+                    if let result = fetchedResults.first {
+                        VStack {
+                            AsyncImage(url: URL(string: result.artworkUrl100)) { image in
+                                image
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 100, height: 100)
+                            } placeholder: {
+                                Color.gray
+                                    .frame(width: 100, height: 100)
+                            }
+                            .frame(width: 100, height: 100)
+                            
+                            VStack(alignment: .leading) {
+                                Text(result.collectionName)
+                                    .font(.title)
+                                
+                                Text(result.artistName)
+                                    .font(.subheadline)
+                                
+                                Text(result.primaryGenreName)
+                                    .font(.subheadline)
+                            }
+                        }
+                    }
+                    
+                    Spacer()
+                    
+                    if showPopup {
+                        ProgressView()
+                            .padding()
+                    } else {
+                        Button(action: {
+                            isBookmarked.toggle()
+                            updateFavorites()
+                        }) {
+                            HStack {
+                                Text("Bookmark")
+                                    .font(.subheadline)
+                                Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")
+                                    .font(.title)
+                            }
+                            .padding()
+                           
+                        }
+                        .frame(maxWidth: .infinity)
+                    }
+                }
             }
-            
-            // Additional song details or content
         }
-        .navigationBarTitle(song.title)
         .onAppear {
-            // Retrieve song details when the view appears
             fetchSongDetails()
+            checkIsBookmarked()
         }
+        .overlay(
+            Group {
+                if showPopup {
+                    VStack {
+                        Text("Added to Bookmarks")
+                            .font(.subheadline)
+                            .foregroundColor(.white)
+                            .padding()
+                            .background(Color(red: 0.2, green: 0.4, blue: 0.6).opacity(0.7))
+                            .cornerRadius(10)
+                            .transition(.opacity)
+//                            .animation(Animation.easeInOut(duration: 1.4), value: showPopup)
+                            .onAppear {
+                                schedulePopupDismissal()
+                            }
+                            .padding(.top, 250)
+                        Spacer()
+                    }
+                }
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+        )
     }
     
     private func fetchSongDetails() {
-        // Make API call or retrieve song details
-        // Update the necessary state variables
+        let collectionId = String(cid)
+        let apiUrl = "https://itunes.apple.com/lookup?id=\(collectionId)"
+
+        print(apiUrl)
+        guard let url = URL(string: apiUrl) else {
+            print("Invalid URL")
+            return
+        }
+        
+        isLoading = true
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            guard let data = data else {
+                print("No data received")
+                isLoading = false
+                return
+            }
+            
+            do{
+                if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                    let results = json["results"] as? [[String: Any]] {
+                                            
+                    let searchResults = results.compactMap { resultDict in
+                        if let artistName = resultDict["artistName"] as? String,
+                           let collectionName = resultDict["collectionName"] as? String,
+                           let artworkUrl100 = resultDict["artworkUrl100"] as? String,
+                           let previewUrl = resultDict["collectionViewUrl"] as? String,
+                           let collectionId = resultDict["collectionId"] as? Int,
+                           let primaryGenreName = resultDict["primaryGenreName"] as? String {
+                            return iTuneFilterApiResponse(
+                                collectionId: collectionId,
+                                collectionName: collectionName,
+                                artistName: artistName,
+                                primaryGenreName: primaryGenreName,
+                                artworkUrl100: artworkUrl100,
+                                previewUrl: previewUrl
+                            )
+                        }
+                        return nil
+                    }
+                    
+                    print("successfully get \(searchResults.count) data")
+                    DispatchQueue.main.async {
+                        fetchedResults.append(contentsOf: searchResults)
+                        isLoading = false
+                    }
+                } else {
+                    print("Failed to decode JSON data: Invalid format.")
+                    isLoading = false
+                }
+            } catch let error {
+                print("Error decoding JSON data: \(error)")
+                isLoading = false
+            }
+        }.resume()
+        
     }
     
     private func updateFavorites() {
-        // Update favorites or bookmarked songs
-        // based on the isBookmarked state variable
+        var favoriteCollectionIDs = UserDefaults.standard.array(forKey: "FavoriteCollectionIDs") as? [Int] ?? []
+        
+        if isBookmarked {
+            favoriteCollectionIDs.append(cid)
+            showPopup = true
+            schedulePopupDismissal()
+        } else {
+            favoriteCollectionIDs.removeAll { $0 == cid }
+        }
+        
+        UserDefaults.standard.setValue(favoriteCollectionIDs, forKey: "FavoriteCollectionIDs")
     }
+    
+    private func schedulePopupDismissal() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.4) {
+            showPopup = false
+        }
+    }
+    
+    private func checkIsBookmarked() {
+        let favoriteCollectionIDs = UserDefaults.standard.array(forKey: "FavoriteCollectionIDs") as? [Int] ?? []
+        isBookmarked = favoriteCollectionIDs.contains(cid)
+    }
+    
 }

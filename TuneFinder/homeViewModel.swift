@@ -52,8 +52,17 @@ class HomeViewModel: ObservableObject {
                             if let artistName = resultDict["artistName"] as? String,
                                let collectionName = resultDict["collectionName"] as? String,
                                let artworkUrl100 = resultDict["artworkUrl100"] as? String,
+                               let previewUrl = resultDict["previewUrl"] as? String,
+                               let collectionId = resultDict["collectionId"] as? Int,
                                let primaryGenreName = resultDict["primaryGenreName"] as? String {
-                                return iTuneFilterApiResponse(collectionName: collectionName, artistName: artistName, primaryGenreName: primaryGenreName, artworkUrl100: artworkUrl100)
+                                return iTuneFilterApiResponse(
+                                    collectionId: collectionId,
+                                    collectionName: collectionName,
+                                    artistName: artistName,
+                                    primaryGenreName: primaryGenreName,
+                                    artworkUrl100: artworkUrl100,
+                                    previewUrl: previewUrl
+                                )
                             }
                             return nil
                         }
@@ -98,12 +107,16 @@ struct iTuneFilterApiResponse: Identifiable {
     let artistName: String
     let primaryGenreName: String
     let collectionName: String
+    let collectionId: Int
     let artworkUrl100: String
+    let previewUrl: String
 
-    init(collectionName: String, artistName: String, primaryGenreName: String, artworkUrl100: String) {
+    init(collectionId: Int, collectionName: String, artistName: String, primaryGenreName: String, artworkUrl100: String, previewUrl: String) {
         self.artistName = artistName
         self.primaryGenreName = primaryGenreName
         self.collectionName = collectionName
+        self.collectionId = collectionId
         self.artworkUrl100 = artworkUrl100
+        self.previewUrl = previewUrl
     }
 }

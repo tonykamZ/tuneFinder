@@ -174,33 +174,35 @@ struct SearchResultView: View {
     var result: iTuneFilterApiResponse
     
     var body: some View {
-        HStack {
-            AsyncImage(url: URL(string: result.artworkUrl100)) { image in
-                image
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 100, height: 100)
-            } placeholder: {
-                Color.gray
+        NavigationLink(destination: DetailView(previewUrl: result.previewUrl, cid: result.collectionId)) {
+            HStack {
+                AsyncImage(url: URL(string: result.artworkUrl100)) { image in
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 100, height: 100)
+                } placeholder: {
+                    Color.gray
+                }
+                .frame(width: 100)
+                
+                VStack(alignment: .leading, spacing: 8) {
+                    Text(result.collectionName)
+                        .font(.headline)
+                        .multilineTextAlignment(.leading)
+                    Text(result.artistName)
+                        .font(.subheadline)
+                        .multilineTextAlignment(.leading)
+                    Text(result.primaryGenreName)
+                        .font(.subheadline)
+                        .multilineTextAlignment(.leading)
+                }
+                .padding(12)
             }
-            .frame(width: 100)
-            
-            VStack(alignment: .leading, spacing: 8) {
-                Text(result.collectionName)
-                    .font(.headline)
-                    .multilineTextAlignment(.leading)
-                Text(result.artistName)
-                    .font(.subheadline)
-                    .multilineTextAlignment(.leading)
-                Text(result.primaryGenreName)
-                    .font(.subheadline)
-                    .multilineTextAlignment(.leading)
-            }
-            .padding(12)
+            .frame(maxWidth: .infinity, maxHeight: 100, alignment: .leading)
+            .background(Color(.systemGray5))
+            .cornerRadius(8)
+            .padding(.bottom, 5)
         }
-        .frame(maxWidth: .infinity, maxHeight: 100, alignment: .leading)
-        .background(Color(.systemGray5))
-        .cornerRadius(8)
-        .padding(.bottom, 5)
     }
 }
