@@ -48,6 +48,10 @@ struct HomeView: View {
         NavigationView {
             ScrollView {
                 VStack {
+                    Text("Tune Finder")
+                        .font(Font.custom("Noteworthy-Bold", size: 36.0))
+                        .foregroundColor(Color(red: 0.0, green: 208.0/255.0, blue: 240.0/255.0, opacity: 0.81))
+                    
                     SearchBarView(viewModel: viewModel, searchText: $viewModel.searchText, selectedEntities: viewModel.selectedEntities)
 
                     HStack {
@@ -126,12 +130,21 @@ struct HomeView: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.top)
-                .navigationBarTitle("Tune Finder")
                 .navigationBarItems(trailing:
-                       NavigationLink(destination: FavoritesView()) {
-                           Text("My fav")
+                    HStack {
+                        NavigationLink(destination: FavoritesView()) {
+                            Text("My fav")
+                                .font(Font.custom("Noteworthy-Bold", size: 18.0))
+                                .foregroundColor(Color(red: 222.0/255.0, green: 245/255.0, blue: 63.0/255.0, opacity: 0.66))
+                        }
+                        
+                    NavigationLink(destination: SettingsView()) {
+                           Image(systemName: "gearshape")
+                               .font(.system(size: 20))
+                               .foregroundColor(.gray)
                        }
-                   )
+                    }
+                )
             }
             .onAppear {
                 viewModel.loadData()
