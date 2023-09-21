@@ -31,9 +31,13 @@ $ git clone https://github.com/tonykamZ/tuneFinder.git
 TuneFinder offers the following features ✨✨
 
 Search: Users can search for songs, albums, or artists using the integrated iTunes Search API.
+
 Filtering: Users can filter search results by country or media type, helping them find the content they're interested in.
+
 Favorites: Users can bookmark songs and add them to a "favorites" list for quick access.
+
 Language Support: The app supports English, Traditional Chinese (Hong Kong), and Simplified Chinese (China) languages, providing a localized experience for users.
+
 
 Feel free to explore TuneFinder and enjoy discovering new music right at your fingertips!
 
