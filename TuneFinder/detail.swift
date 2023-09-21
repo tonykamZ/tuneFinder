@@ -54,7 +54,7 @@ struct DetailView: View {
                             updateFavorites()
                         }) {
                             HStack {
-                                Text("Bookmark")
+                                Text("bookmark")
                                     .font(.subheadline)
                                 Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")
                                     .font(.title)

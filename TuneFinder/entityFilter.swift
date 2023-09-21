@@ -18,19 +18,28 @@ func getEntityString(_ entities: Set<Entity>) -> String {
 
 func getEntityStringForDisplay(_ entities: Set<Entity>) -> String {
     if entities.isEmpty {
-        return "song, album, and artist"
+        let allEntityLoc = NSLocalizedString("allEntity", comment: "")
+        return allEntityLoc
     }
 
     let entityNames = entities.map { $0 == .musicArtist ? "artist" : $0.rawValue }
     
     if entityNames.count == 1 {
-        return entityNames[0]
+        let entityLoc = NSLocalizedString(entityNames[0], comment: "")
+        return entityLoc
     } else if entityNames.count == 2 {
-        return "\(entityNames[0]) and \(entityNames[1])"
+        let entityLoc1 = NSLocalizedString(entityNames[0], comment: "")
+        let entityLoc2 = NSLocalizedString(entityNames[1], comment: "")
+        let and = NSLocalizedString("and", comment: "")
+        return "\(entityLoc1) \(and) \(entityLoc2)"
     } else {
         let lastEntityName = entityNames.last!
-        let joinedNames = entityNames.dropLast().joined(separator: ", ")
-        return "\(joinedNames), and \(lastEntityName)"
+        let lastEntityLoc = NSLocalizedString(lastEntityName, comment: "")
+        let entityLoc1 = NSLocalizedString(entityNames[0], comment: "")
+        let entityLoc2 = NSLocalizedString(entityNames[1], comment: "")
+        let and = NSLocalizedString("and", comment: "")
+
+        return "\(entityLoc1), \(entityLoc2), \(and) \(lastEntityLoc)"
     }
 }
 
@@ -42,7 +51,8 @@ struct EntitySelectionButton: View {
         Button(action: {
             viewModel.toggleEntitySelection(entity)
         }) {
-            Text(entity == .musicArtist ? "artist" : entity.rawValue)
+            let entityLoc = NSLocalizedString(entity == .musicArtist ? "artist" : entity.rawValue, comment: "")
+            Text(entityLoc)
                 .font(.subheadline)
                 .padding(8)
                 .foregroundColor(viewModel.isEntitySelected(entity) ? .white : .gray)

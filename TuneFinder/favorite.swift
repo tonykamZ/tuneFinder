@@ -16,8 +16,10 @@ struct FavoritesView: View {
                 ProgressView()
                     .padding()
             } else {
+                let total = NSLocalizedString("total", comment: "")
+                let fav = NSLocalizedString("fav", comment: "")
                 VStack {
-                    Text("Total \(favoriteCollections.count) favorite items")
+                    Text("\(total) \(favoriteCollections.count) \(fav)")
                         .font(.system(size: 12))
                         .foregroundColor(.gray)
                         .frame(maxWidth: .infinity, alignment: .leading)
