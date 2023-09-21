@@ -26,9 +26,9 @@ $ git clone https://github.com/tonykamZ/tuneFinder.git
 
 7. Wait for a while, and the app will be built onto your simulator or physical device!🎉🎉
 
-## Features ✨
+## Features
 
-TuneFinder offers the following features:
+TuneFinder offers the following features ✨✨
 
 Search: Users can search for songs, albums, or artists using the integrated iTunes Search API.
 Filtering: Users can filter search results by country or media type, helping them find the content they're interested in.
