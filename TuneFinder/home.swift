@@ -54,17 +54,41 @@ struct HomeView: View {
                     
                     SearchBarView(viewModel: viewModel, searchText: $viewModel.searchText, selectedEntities: viewModel.selectedEntities)
 
-                    HStack {
-                        EntitySelectionButton(entity: .song, viewModel: viewModel)
-                        EntitySelectionButton(entity: .album, viewModel: viewModel)
-                        EntitySelectionButton(entity: .musicArtist, viewModel: viewModel)
+                    ZStack {
+                        HStack {
+                            EntitySelectionButton(entity: .song, viewModel: viewModel)
+                            EntitySelectionButton(entity: .album, viewModel: viewModel)
+                            EntitySelectionButton(entity: .musicArtist, viewModel: viewModel)
+                        }
+                        VStack {
+                            Spacer()
+                            HStack {
+                                Spacer()
+                                DropdownButton(viewModel: viewModel)
+                            }
+                        }
                     }
                     .padding(.horizontal)
 
                         VStack {
                             if viewModel.isLoading {
-                                ProgressView()
-                                    .padding()
+                                VStack {
+                                       ProgressView()
+                                           .progressViewStyle(CircularProgressViewStyle())
+                                           .scaleEffect(1.5) // Increase the size of the progress view
+                                           .foregroundColor(.yellow) // Initial color
+                                       
+                                    Text("loading").localize()
+                                           .font(.headline)
+                                           .foregroundColor(.gray)
+                                           .padding(.top, 8)
+                                   }
+                                   .padding()
+                                   .cornerRadius(10)
+                                   .shadow(radius: 5)
+                                   .transition(.opacity) // Apply fade-in transition
+                                   .animation(.easeInOut(duration: 1.5).repeatForever()) // Animate color change
+                                  
                             } else if viewModel.isSearchedEmpty  {
                                 let noResult = Text("noResultFound") + viewModel.currentSearchedEntitiesText
                                 let searckKeyword = Text("searchKeyword") + Text("\(viewModel.currentSearchedKeyword)")
@@ -75,10 +99,20 @@ struct HomeView: View {
                                         .font(.subheadline)
                                         .padding()
                                 }
+                                .padding()
                             } else {
                                 if(!viewModel.currentSearchedEntities.isEmpty){
                                     let totalSearchCount = Text("total") + Text(" \(viewModel.searchResults.count) ") + Text("results") + Text(" (") + viewModel.currentSearchedEntitiesText + Text(")")
 
+                                    if(!viewModel.selectedCountry.isEmpty){
+                                        let countryLoc = Text(LocalizedStringKey(viewModel.selectedCountry))
+                                        let selectedCountry = Text("currentCountry") + countryLoc
+                                        selectedCountry.localize()
+                                            .font(.system(size: 12))
+                                            .foregroundColor(.gray)
+                                            .frame(maxWidth: .infinity, alignment: .leading)
+                                    }
+                                    
                                     totalSearchCount.localize()
                                         .font(.system(size: 12))
                                         .foregroundColor(.gray)

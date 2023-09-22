@@ -22,6 +22,7 @@
 		49B8813F2ABC396700CDB959 /* languageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B8813E2ABC396700CDB959 /* languageManager.swift */; };
 		49C0B1FA2ABD3A8A0076C649 /* LocalizeModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C0B1F92ABD3A8A0076C649 /* LocalizeModifier.swift */; };
 		49C0B1FC2ABD437A0076C649 /* customBackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C0B1FB2ABD437A0076C649 /* customBackButton.swift */; };
+		49C0B1FE2ABD4E100076C649 /* customDropDownButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C0B1FD2ABD4E100076C649 /* customDropDownButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +48,7 @@
 		49B8813E2ABC396700CDB959 /* languageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = languageManager.swift; sourceTree = "<group>"; };
 		49C0B1F92ABD3A8A0076C649 /* LocalizeModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizeModifier.swift; sourceTree = "<group>"; };
 		49C0B1FB2ABD437A0076C649 /* customBackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = customBackButton.swift; sourceTree = "<group>"; };
+		49C0B1FD2ABD4E100076C649 /* customDropDownButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = customDropDownButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +97,7 @@
 				49B8813E2ABC396700CDB959 /* languageManager.swift */,
 				49C0B1F92ABD3A8A0076C649 /* LocalizeModifier.swift */,
 				49C0B1FB2ABD437A0076C649 /* customBackButton.swift */,
+				49C0B1FD2ABD4E100076C649 /* customDropDownButton.swift */,
 			);
 			path = TuneFinder;
 			sourceTree = "<group>";
@@ -190,6 +193,7 @@
 				490343662AB359760007CD8A /* detail.swift in Sources */,
 				490343622AB359130007CD8A /* setting.swift in Sources */,
 				490343602AB359070007CD8A /* search.swift in Sources */,
+				49C0B1FE2ABD4E100076C649 /* customDropDownButton.swift in Sources */,
 				490343502AB351310007CD8A /* TuneFinderApp.swift in Sources */,
 				49B8813F2ABC396700CDB959 /* languageManager.swift in Sources */,
 			);

@@ -31,7 +31,7 @@ func getEntityText(_ entities: Set<Entity>) -> Text {
         let entityLoc1 = LocalizedStringKey(entityNames[0])
         let entityLoc2 = LocalizedStringKey(entityNames[1])
         let and = LocalizedStringKey("and")
-        let combined = Text(entityLoc1) + Text(and) + Text(entityLoc2)
+        let combined = Text(entityLoc1) + Text(" ")  + Text(and) + Text(" ")  + Text(entityLoc2)
         return combined
     } else {
         let lastEntityName = entityNames.last!
@@ -40,7 +40,7 @@ func getEntityText(_ entities: Set<Entity>) -> Text {
         let entityLoc2 = LocalizedStringKey(entityNames[1])
         let and = LocalizedStringKey("and")
 
-        let combined = Text(entityLoc1) + Text(",")  + Text(entityLoc2) + Text(and) + Text(lastEntityLoc)
+        let combined = Text(entityLoc1) + Text(", ")  + Text(entityLoc2) + Text(" ")  + Text(and) + Text(" ") + Text(lastEntityLoc)
         return combined
     }
 }

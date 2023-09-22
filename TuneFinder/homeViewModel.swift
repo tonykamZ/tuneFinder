@@ -4,6 +4,7 @@ class HomeViewModel: ObservableObject {
     @Published var searchResults: [iTuneFilterApiResponse] = []
     @Published var searchText: String = ""
     @Published var selectedEntities: Set<Entity> = []
+    @Published var selectedCountry: String = ""
     @Published var isLoading: Bool = false
     @Published var isSearchedEmpty: Bool = false
     @Published var currentSearchedEntities: String = ""
@@ -34,9 +35,9 @@ class HomeViewModel: ObservableObject {
         }
         
         func fetchResults() {
-            let apiUrl = "https://itunes.apple.com/search?term=\(searchTerm)&entity=\(entityQuery)&limit=9999"
+            let apiUrl = "https://itunes.apple.com/search?term=\(searchTerm)&entity=\(entityQuery)&limit=9999&country=\(selectedCountry)"
             
-            print(apiUrl)
+            print("apiUrl -> \(apiUrl)")
             guard let url = URL(string: apiUrl) else {
                 print("Invalid URL")
                 processResults()

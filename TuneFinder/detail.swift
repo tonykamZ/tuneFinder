@@ -41,6 +41,7 @@ struct DetailView: View {
                                     .font(.subheadline)
                             }
                         }
+                        .padding()
                     }
                     
                     Spacer()
@@ -94,6 +95,7 @@ struct DetailView: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         )
+        .padding()
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading: CustomBackButton())
     }
