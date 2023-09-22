@@ -38,9 +38,9 @@ Favorites: Users can bookmark songs and add them to a "favorites" list for quick
 
 Language Support: The app supports English, Traditional Chinese (Hong Kong), and Simplified Chinese (China) languages, providing a localized experience for users.
 
-<img src="https://github.com/tonykamZ/tuneFinder/assets/67361009/f8ab2269-c949-44af-aae4-ef725f7baa9e" width="160" height="300">
-<img src="https://github.com/tonykamZ/tuneFinder/assets/67361009/9aa1356d-007e-43fd-ba0d-d932bd5e9e4b" width="160" height="300">
-<img src="https://github.com/tonykamZ/tuneFinder/assets/67361009/ed7d3bcc-1eff-4e3f-b292-5afa3ded203e" width="160" height="300">
+<img src="https://github.com/tonykamZ/tuneFinder/assets/67361009/a18e4cb2-a386-421e-87b6-6d99d7acae98" width="160" height="300">
+<img src="https://github.com/tonykamZ/tuneFinder/assets/67361009/928eb76d-7701-4492-9c9c-2acae8c70ec2" width="160" height="300">
+<img src="https://github.com/tonykamZ/tuneFinder/assets/67361009/30a09759-de5a-4d0e-9bd0-40a12b913920" width="160" height="300">
 
 Feel free to explore TuneFinder and enjoy discovering new music right at your fingertips!
 
