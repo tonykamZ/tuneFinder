@@ -31,13 +31,13 @@ $ git clone https://github.com/tonykamZ/tuneFinder.git
 TuneFinder offers the following features ✨✨
 
 Search: Users can search for songs, albums, or artists using the integrated iTunes Search API.
-![IMG_0533](https://github.com/tonykamZ/tuneFinder/assets/67361009/f8ab2269-c949-44af-aae4-ef725f7baa9e | width=90)
+<img src="https://github.com/tonykamZ/tuneFinder/assets/67361009/f8ab2269-c949-44af-aae4-ef725f7baa9e" width="100" height="280">
 
 Filtering: Users can filter search results by country or media type, helping them find the content they're interested in.
-![IMG_0534](https://github.com/tonykamZ/tuneFinder/assets/67361009/9aa1356d-007e-43fd-ba0d-d932bd5e9e4b | width=90)
+<img src="https://github.com/tonykamZ/tuneFinder/assets/67361009/9aa1356d-007e-43fd-ba0d-d932bd5e9e4b" width="100" height="280">
 
 Favorites: Users can bookmark songs and add them to a "favorites" list for quick access.
-![IMG_0535](https://github.com/tonykamZ/tuneFinder/assets/67361009/ed7d3bcc-1eff-4e3f-b292-5afa3ded203e | width=90)
+<img src="https://github.com/tonykamZ/tuneFinder/assets/67361009/ed7d3bcc-1eff-4e3f-b292-5afa3ded203e" width="100" height="280">
 
 Language Support: The app supports English, Traditional Chinese (Hong Kong), and Simplified Chinese (China) languages, providing a localized experience for users.
 
