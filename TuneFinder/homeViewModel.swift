@@ -7,7 +7,12 @@ class HomeViewModel: ObservableObject {
     @Published var isLoading: Bool = false
     @Published var isSearchedEmpty: Bool = false
     @Published var currentSearchedEntities: String = ""
+    @Published var currentSearchedEntitiesText: Text
     @Published var currentSearchedKeyword: String = ""
+    
+    init() {
+        currentSearchedEntitiesText = Text("")
+      }
 
     func performSearch() {
         let searchTerm = searchText.replacingOccurrences(of: " ", with: "+")
@@ -23,6 +28,7 @@ class HomeViewModel: ObservableObject {
                 self.isLoading = false
                 self.isSearchedEmpty = self.searchResults.isEmpty
                 self.currentSearchedEntities = getEntityStringForDisplay(self.selectedEntities)
+                self.currentSearchedEntitiesText = getEntityText(self.selectedEntities)
                 self.currentSearchedKeyword = self.searchText
             }
         }

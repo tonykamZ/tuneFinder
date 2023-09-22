@@ -1,8 +1,8 @@
 import SwiftUI
 
 struct SettingsView: View {
+    @Environment(\.presentationMode) var presentationMode
     @Environment(\.locale) private var locale
-    @Environment(\.appLanguage) var appLanguage
     @State private var isPickerVisible = false
     @State private var selectedLanguage = LanguageManager.shared.currentLanguage
     @State private var isLoading = false
@@ -57,13 +57,14 @@ struct SettingsView: View {
 
             Spacer()
         }
+        .navigationBarBackButtonHidden(true)
+        .navigationBarItems(leading: CustomBackButton())
         .overlay {
             if isLoading {
                 loadingView
             }
         }
         .onChange(of: selectedLanguage) { _ in
-//            appLanguage = selectedLanguage
             languageChanged()
         }
         .onAppear {
@@ -85,7 +86,7 @@ struct SettingsView: View {
     private func languageChanged() {
         LanguageManager.shared.currentLanguage = selectedLanguage
         UserDefaults.standard.set(selectedLanguage, forKey: "AppLanguage")
-        UIApplication.sharedApplication().keyWindow?.rootViewController = storyboard!.instantiateViewControllerWithIdentifier("Root_View")
+        UserDefaults.standard.synchronize()
     }
 }
 

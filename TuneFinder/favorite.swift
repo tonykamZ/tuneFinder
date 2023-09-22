@@ -11,29 +11,32 @@ struct FavoritesView: View {
     @State private var isLoading = false
 
     var body: some View {
-        ScrollView {
-            if isLoading {
-                ProgressView()
-                    .padding()
-            } else {
-                let total = NSLocalizedString("total", comment: "")
-                let fav = NSLocalizedString("fav", comment: "")
-                VStack {
-                    Text("\(total) \(favoriteCollections.count) \(fav)")
-                        .font(.system(size: 12))
-                        .foregroundColor(.gray)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    
-                    ForEach(favoriteCollections, id: \.self) { collection in
-                        FavoriteListView(result: collection, cid: collection.collectionId)
+        VStack {
+            ScrollView {
+                if isLoading {
+                    ProgressView()
+                        .padding()
+                } else {
+                    let subtitle = Text("total") + Text(" \(favoriteCollections.count) ") + Text("fav")
+                    VStack {
+                        subtitle.localize()
+                            .font(.system(size: 12))
+                            .foregroundColor(.gray)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        
+                        ForEach(favoriteCollections, id: \.self) { collection in
+                            FavoriteListView(result: collection, cid: collection.collectionId)
+                        }
                     }
-                }
-                .padding(.horizontal)
-                .onAppear {
-                    loadFavoriteCollections()
+                    .padding(.horizontal)
+                    .onAppear {
+                        loadFavoriteCollections()
+                    }
                 }
             }
         }
+        .navigationBarBackButtonHidden(true)
+        .navigationBarItems(leading: CustomBackButton())
     }
     
     private func loadFavoriteCollections() {

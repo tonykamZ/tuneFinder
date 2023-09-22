@@ -11,6 +11,8 @@
 "artist" = "藝人";
 "allEntity" = "歌曲、專輯和藝人";
 "fav" = "最愛項目";
-"bookmark" = "書籤";
+"bookmark" = "加入書籤";
 "setting" = "設定";
 "swlan" = "切換語言";
+"bookmarked" = "已加書籤";
+

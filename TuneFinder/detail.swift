@@ -54,7 +54,7 @@ struct DetailView: View {
                             updateFavorites()
                         }) {
                             HStack {
-                                Text("bookmark")
+                                Text(isBookmarked ? "bookmarked" : "bookmark").localize()
                                     .font(.subheadline)
                                 Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")
                                     .font(.title)
@@ -76,7 +76,7 @@ struct DetailView: View {
             Group {
                 if showPopup {
                     VStack {
-                        Text("Added to Bookmarks")
+                        Text("bookmarked").localize()
                             .font(.subheadline)
                             .foregroundColor(.white)
                             .padding()
@@ -94,6 +94,8 @@ struct DetailView: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         )
+        .navigationBarBackButtonHidden(true)
+        .navigationBarItems(leading: CustomBackButton())
     }
     
     private func fetchSongDetails() {

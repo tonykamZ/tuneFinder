@@ -16,6 +16,35 @@ func getEntityString(_ entities: Set<Entity>) -> String {
     return entityNames.joined(separator: ",")
 }
 
+func getEntityText(_ entities: Set<Entity>) -> Text {
+    if entities.isEmpty {
+        let allEntityLoc = LocalizedStringKey("allEntity")
+        return Text(allEntityLoc)
+    }
+
+    let entityNames = entities.map { $0 == .musicArtist ? "artist" : $0.rawValue }
+    
+    if entityNames.count == 1 {
+        let entityLoc = LocalizedStringKey(entityNames[0])
+        return Text(entityLoc)
+    } else if entityNames.count == 2 {
+        let entityLoc1 = LocalizedStringKey(entityNames[0])
+        let entityLoc2 = LocalizedStringKey(entityNames[1])
+        let and = LocalizedStringKey("and")
+        let combined = Text(entityLoc1) + Text(and) + Text(entityLoc2)
+        return combined
+    } else {
+        let lastEntityName = entityNames.last!
+        let lastEntityLoc = LocalizedStringKey(lastEntityName)
+        let entityLoc1 = LocalizedStringKey(entityNames[0])
+        let entityLoc2 = LocalizedStringKey(entityNames[1])
+        let and = LocalizedStringKey("and")
+
+        let combined = Text(entityLoc1) + Text(",")  + Text(entityLoc2) + Text(and) + Text(lastEntityLoc)
+        return combined
+    }
+}
+
 func getEntityStringForDisplay(_ entities: Set<Entity>) -> String {
     if entities.isEmpty {
         let allEntityLoc = NSLocalizedString("allEntity", comment: "")
@@ -51,8 +80,9 @@ struct EntitySelectionButton: View {
         Button(action: {
             viewModel.toggleEntitySelection(entity)
         }) {
-            let entityLoc = NSLocalizedString(entity == .musicArtist ? "artist" : entity.rawValue, comment: "")
-            Text(entityLoc)
+            let converted = entity == .musicArtist ? "artist" : entity.rawValue
+            let entityLoc = Text(LocalizedStringKey(converted))
+            entityLoc.localize()
                 .font(.subheadline)
                 .padding(8)
                 .foregroundColor(viewModel.isEntitySelected(entity) ? .white : .gray)

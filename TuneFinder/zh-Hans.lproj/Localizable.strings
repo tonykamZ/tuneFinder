@@ -11,6 +11,7 @@
 "artist" = "艺人";
 "allEntity" = "歌曲、专辑和艺人";
 "fav" = "收藏项目";
-"bookmark" = "书签";
+"bookmark" = "添加到书签";
 "setting" = "设置";
 "swlan" = "切换语言";
+"bookmarked" = "已加书签";

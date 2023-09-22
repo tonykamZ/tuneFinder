@@ -48,7 +48,7 @@ struct HomeView: View {
         NavigationView {
             ScrollView {
                 VStack {
-                    Text("title")
+                    Text("title").localize()
                         .font(Font.custom("Noteworthy-Bold", size: 36.0))
                         .foregroundColor(Color(red: 0.0, green: 208.0/255.0, blue: 240.0/255.0, opacity: 0.81))
                     
@@ -66,20 +66,20 @@ struct HomeView: View {
                                 ProgressView()
                                     .padding()
                             } else if viewModel.isSearchedEmpty  {
-                                let noResult = Text("noResultFound") + Text("\(viewModel.currentSearchedEntities)")
+                                let noResult = Text("noResultFound") + viewModel.currentSearchedEntitiesText
                                 let searckKeyword = Text("searchKeyword") + Text("\(viewModel.currentSearchedKeyword)")
                                 VStack {
-                                    noResult
+                                    noResult.localize()
                                         .font(.subheadline)
-                                    searckKeyword
+                                    searckKeyword.localize()
                                         .font(.subheadline)
                                         .padding()
                                 }
                             } else {
                                 if(!viewModel.currentSearchedEntities.isEmpty){
-                                    let totalSearchCount = Text("total") + Text(" \(viewModel.searchResults.count) ") + Text("results") + Text(" (\(viewModel.currentSearchedEntities))")
+                                    let totalSearchCount = Text("total") + Text(" \(viewModel.searchResults.count) ") + Text("results") + Text(" (") + viewModel.currentSearchedEntitiesText + Text(")")
 
-                                    totalSearchCount
+                                    totalSearchCount.localize()
                                         .font(.system(size: 12))
                                         .foregroundColor(.gray)
                                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -137,7 +137,7 @@ struct HomeView: View {
                 .navigationBarItems(trailing:
                     HStack {
                         NavigationLink(destination: FavoritesView()) {
-                            Text("myFav".localize())
+                            Text("myFav").localize()
                                 .font(Font.custom("Noteworthy-Bold", size: 18.0))
                                 .foregroundColor(Color(red: 222.0/255.0, green: 245/255.0, blue: 63.0/255.0, opacity: 0.66))
                         }
@@ -170,7 +170,7 @@ struct SearchBarView : View {
     var body: some View {
         let searchFor = NSLocalizedString("searchFor", comment: "") + "\(getEntityStringForDisplay(viewModel.selectedEntities))"
         HStack {
-            TextField(searchFor, text: $viewModel.searchText)
+            TextField("searchFor", text: $viewModel.searchText).localize()
                 .padding(EdgeInsets(top: 12, leading: 16, bottom: 12, trailing: 0))
                 .background(Color(.systemGray5))
                 .cornerRadius(8)
